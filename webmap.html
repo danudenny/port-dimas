@@ -167,6 +167,28 @@
         .link:hover {
             text-decoration: underline;
         }
+
+        #start-analysis-button {
+            width: 150px;
+            height: 40px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        #start-analysis-button img {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 
@@ -191,6 +213,14 @@
                 <select>
                     <option>Select Province</option>
                 </select>
+
+                <!-- Start Analysis Button di bawah tetapi di kanan -->
+                <div style="display: flex; justify-content: flex-end;">
+                    <button id="start-analysis-button">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3523/3523886.png" alt="Machine Logo">
+                        Start Analysis
+                    </button>
+                </div>
             </div>
 
             <div class="filter-category">
@@ -303,6 +333,11 @@
         // Toggle SBTN Layer
         document.getElementById('sbtnToggle').addEventListener('change', function () {
             this.checked ? sbtnLayer.addTo(map) : map.removeLayer(sbtnLayer);
+        });
+
+        document.getElementById('start-analysis-button').addEventListener('click', function () {
+            alert('Starting Analysis...');
+            // Tambahkan fungsi analisis di sini
         });
 
         new Chart(document.getElementById('deforestationChart').getContext('2d'), {
