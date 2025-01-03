@@ -1,5 +1,5 @@
 
-# Land Use Tracker Dashboard
+# Deforestation Analysis
 
 This project implements a **Land Use Tracker Dashboard** that utilizes the Leaflet.js map library and Chart.js for displaying dynamic map layers and statistical visualizations.
 
