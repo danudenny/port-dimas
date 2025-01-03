@@ -174,7 +174,7 @@
     <div id="container">
         <div id="map"></div>
         <div id="filter-overlay">
-            <h3>Filters</h3>
+            <h3>Deforestation Analysis</h3>
             <label for="analysis">Analysis Type</label>
             <select id="analysis">
                 <option value="eudr">EUDR</option>
@@ -194,32 +194,25 @@
             </div>
 
             <div class="filter-category">
-                <h3>Landuse</h3>
+                <h3>Forest Cover</h3>
                 <div class="toggle-group">
-                    <span>Forest Area</span>
+                    <span>JRC - Global Forest Cover</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="forestToggle" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="toggle-group">
-                    <span>Deforestation</span>
+                    <span>GFW - Primary Forest</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="gfwToggle">
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="toggle-group">
-                    <span>Deforestation by Plot</span>
+                    <span>GFW - Tree Cover Loss</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="toggle-group">
-                    <span>Plot Polygon</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" checked>
+                        <input type="checkbox" id="sbtnToggle">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -269,6 +262,21 @@
 
         light.addTo(map);
 
+        const forestLayer = L.tileLayer('https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/koltiva_gis_internal%3Agis_int_eudr_jrc_wms@EPSG%3A900913@png/{z}/{x}/{-y}.png', {
+            attribution: '© Koltiva Geoserver',
+            maxZoom: 19,
+        });
+
+        const gfwLayer = L.tileLayer('https://storage.googleapis.com/earthenginepartners-hansen/tiles/Primary_HT_forests_2001/{z}/{x}/{y}.png', {
+            attribution: '© Koltiva Geoserver',
+            maxZoom: 19,
+        });
+
+        const sbtnLayer = L.tileLayer('https://tiles.globalforestwatch.org/umd_tree_cover_loss/latest/dynamic/{z}/{x}/{y}.png?', {
+            attribution: '© Koltiva Geoserver',
+            maxZoom: 19,
+        });
+
         const basemapButtons = document.querySelectorAll('.basemap-option');
         basemapButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
@@ -282,7 +290,21 @@
             });
         });
 
-        // Statistik Chart.js
+        // Toggle Forest Area
+        document.getElementById('forestToggle').addEventListener('change', function () {
+            this.checked ? forestLayer.addTo(map) : map.removeLayer(forestLayer);
+        });
+
+        // Toggle GFW Layer
+        document.getElementById('gfwToggle').addEventListener('change', function () {
+            this.checked ? gfwLayer.addTo(map) : map.removeLayer(gfwLayer);
+        });
+
+        // Toggle SBTN Layer
+        document.getElementById('sbtnToggle').addEventListener('change', function () {
+            this.checked ? sbtnLayer.addTo(map) : map.removeLayer(sbtnLayer);
+        });
+
         new Chart(document.getElementById('deforestationChart').getContext('2d'), {
             type: 'bar',
             data: {

@@ -1,0 +1,50 @@
+/* Pagination Start */
+.pagination-btn, .pagination-arrow {
+    background-color: transparent;
+    border: none;
+    color: #D1D5DB;
+    padding: 8px 16px;
+    margin: 0 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s, text-decoration 0.3s, text-decoration-thickness 0.3s;
+    text-decoration: none;
+	}
+
+	.pagination-arrow {
+    color: #319C4C;
+	font-size: 24px;
+	}
+
+	.pagination-btn:hover {
+		text-decoration: underline;
+		text-decoration-color: #319C4C;
+		text-decoration-thickness: 2.5px; /* Adjust thickness as needed */
+	}
+
+	.pagination-btn.active {
+		font-weight: bold;
+		color: #111827; /* Set active page text color to black */
+	}
+
+	.fixed-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+	}
+	/* Pagination End */
+
+	/* Pagination Content Start*/
+	.image-container img {
+            width: 80%;
+            max-width: 700px;
+	}
+	.caption {
+		margin-top: 10px;
+		font-size: 14px;
+		color: #555;
+	}
+	/* Pagination Content End*/
