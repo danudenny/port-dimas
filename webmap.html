@@ -189,6 +189,34 @@
             width: 20px;
             height: 20px;
         }
+
+        #loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #ff9800;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
@@ -261,21 +289,21 @@
                 <div class="toggle-group">
                     <span>Concession</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" id="deforestationToggle" checked>
+                        <input type="checkbox" id="concessionToggle" checked>
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="toggle-group">
                     <span>Deforestation</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" id="gfwToggle">
+                        <input type="checkbox" id="deforestationToggle">
                         <span class="slider"></span>
                     </label>
                 </div>
                 <div class="toggle-group">
                     <span>Deforestation by concession</span>
                     <label class="toggle-switch">
-                        <input type="checkbox" id="sbtnToggle">
+                        <input type="checkbox" id="defByConcessionToggle">
                         <span class="slider"></span>
                     </label>
                 </div>
@@ -286,8 +314,14 @@
 
         <div id="stats-overlay">
             <h3>Statistics</h3>
+            <div id="deforestation-description" class="chart-container">
+                <!-- Description will be added here by JavaScript -->
+            </div>
             <div class="chart-container">
                 <canvas id="deforestationChart"></canvas>
+            </div>
+            <div id="deforestationByConcession-description" class="chart-container">
+                <!-- Description will be added here by JavaScript -->
             </div>
             <div class="chart-container">
                 <canvas id="deforestationByPlotChart"></canvas>
@@ -299,6 +333,10 @@
             <div class="basemap-option" id="btn-dark">Dark</div>
             <div class="basemap-option" id="btn-satellite">Satellite</div>
         </div>
+    </div>
+
+    <div id="loading-overlay">
+        <div class="loader"></div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -391,25 +429,78 @@
         });
 
         document.getElementById('start-analysis-button').addEventListener('click', function () {
+            // Show loading animation
+            document.getElementById('loading-overlay').style.display = 'flex';
+
             // Zoom ke Kalimantan Barat
             zoomToKalbar();
-            // Tampilkan "Analysis result"
-            document.getElementById('analysis-result').style.display = 'block';
+
+            // Simulate loading time before showing analysis result
+            setTimeout(() => {
+                // Hide loading animation
+                document.getElementById('loading-overlay').style.display = 'none';
+
+                // Tampilkan "Analysis result"
+                document.getElementById('analysis-result').style.display = 'block';
+            }, 2000); // Adjust the timeout duration as needed
         });
 
         let concessionLayer;
-
-        document.getElementById('deforestationToggle').addEventListener('change', function() {
+        document.getElementById('concessionToggle').addEventListener('change', function() {
             if (this.checked) {
                 fetch('data/c_company.geojson')
                     .then(response => response.json())
                     .then(data => {
-                        concessionLayer = L.geoJSON(data).addTo(map);
+                        concessionLayer = L.geoJSON(data, {
+                            style: {
+                                color: 'blue' // Change color to green
+                            }
+                        }).addTo(map);
                     })
                     .catch(error => console.error('Error loading GeoJSON data:', error));
             } else {
                 if (concessionLayer) {
                     map.removeLayer(concessionLayer);
+                }
+            }
+        });
+
+        let deforestationLayer;
+        document.getElementById('deforestationToggle').addEventListener('change', function() {
+            if (this.checked) {
+                fetch('data/d_deforestation_dissolved.geojson')
+                    .then(response => response.json())
+                    .then(data => {
+                        deforestationLayer = L.geoJSON(data, {
+                            style: {
+                                color: 'red' // Change color to red
+                            }
+                        }).addTo(map);
+                    })
+                    .catch(error => console.error('Error loading GeoJSON data:', error));
+            } else {
+                if (deforestationLayer) {
+                    map.removeLayer(deforestationLayer);
+                }
+            }
+        });
+
+        let defByConcessionLayer;
+        document.getElementById('defByConcessionToggle').addEventListener('change', function() {
+            if (this.checked) {
+                fetch('data/b_def_by_plot.geojson')
+                    .then(response => response.json())
+                    .then(data => {
+                        defByConcessionLayer = L.geoJSON(data, {
+                            style: {
+                                color: 'orange' // Change color to blue
+                            }
+                        }).addTo(map);
+                    })
+                    .catch(error => console.error('Error loading GeoJSON data:', error));
+            } else {
+                if (defByConcessionLayer) {
+                    map.removeLayer(defByConcessionLayer);
                 }
             }
         });
@@ -444,6 +535,34 @@
                 }]
             }
         });
+
+        // Function to calculate total area from GeoJSON polygons
+        function calculateTotalArea(geojsonData) {
+            return geojsonData.features.reduce((total, feature) => {
+                return total + L.geoJSON(feature).getLayers()[0].getArea();
+            }, 0);
+        }
+
+        // Fetch and display deforestation statistics
+        fetch('data/d_deforestation_dissolved.geojson')
+            .then(response => response.json())
+            .then(data => {
+                const totalDeforestationArea = calculateTotalArea(data);
+                document.getElementById('deforestation-description').innerHTML = `
+                    <p>Total deforestation area after 2020: ${totalDeforestationArea.toFixed(2)} hectares</p>
+                `;
+            })
+            .catch(error => console.error('Error loading deforestation data:', error));
+
+        fetch('data/b_def_by_plot.geojson')
+            .then(response => response.json())
+            .then(data => {
+                const totalDefByConcessionArea = calculateTotalArea(data);
+                document.getElementById('deforestationByConcession-description').innerHTML = `
+                    <p>Total deforestation by concession area: ${totalDefByConcessionArea.toFixed(2)} hectares</p>
+                `;
+            })
+            .catch(error => console.error('Error loading deforestation by concession data:', error));
     </script>
 </body>
 
