@@ -204,14 +204,23 @@
 
             <div class="filter-category">
                 <span>Filter</span>
-                <select>
-                    <option>Select Year</option>
+                <select id="year-filter">
+                    <option value="2020">Select Year</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
                 </select>
                 <select>
-                    <option>Select Country</option>
+                    <option value="2020">Select Country</option>
+                    <option value="2021">Indonesia</option>
+                    <option value="2022">Thailand</option>
+                    <option value="2023">Ivory Coast</option>
                 </select>
                 <select>
-                    <option>Select Province</option>
+                    <option value="2020">Select Province</option>
+                    <option value="2021">Kalimantan Barat</option>
+                    <option value="2022">Sulawesi Selatan</option>
+                    <option value="2023">Aceh</option>
                 </select>
 
                 <!-- Start Analysis Button di bawah tetapi di kanan -->
@@ -241,6 +250,30 @@
                 </div>
                 <div class="toggle-group">
                     <span>GFW - Tree Cover Loss</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sbtnToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="filter-category" id="analysis-result" style="display: none;">
+                <h3>Analysis result</h3>
+                <div class="toggle-group">
+                    <span>Concession</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="deforestationToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-group">
+                    <span>Deforestation</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gfwToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-group">
+                    <span>Deforestation by concession</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="sbtnToggle">
                         <span class="slider"></span>
@@ -346,8 +379,43 @@
             this.checked ? sbtnLayer.addTo(map) : map.removeLayer(sbtnLayer);
         });
 
+        // Fungsi untuk menyembunyikan atau menampilkan elemen
+        function toggleVisibility(elementId, show) {
+            const element = document.getElementById(elementId);
+            element.style.display = show ? 'block' : 'none';
+        }
+
+        // Sembunyikan "Analysis result" di awal (sebelum tombol diklik)
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleVisibility('analysis-result-section', false);
+        });
+
         document.getElementById('start-analysis-button').addEventListener('click', function () {
-            alert('Zooming to Kalimantan Barat...');
+            // Zoom ke Kalimantan Barat
+            zoomToKalbar();
+            // Tampilkan "Analysis result"
+            document.getElementById('analysis-result').style.display = 'block';
+        });
+
+        let concessionLayer;
+
+        document.getElementById('deforestationToggle').addEventListener('change', function() {
+            if (this.checked) {
+                fetch('data/c_company.geojson')
+                    .then(response => response.json())
+                    .then(data => {
+                        concessionLayer = L.geoJSON(data).addTo(map);
+                    })
+                    .catch(error => console.error('Error loading GeoJSON data:', error));
+            } else {
+                if (concessionLayer) {
+                    map.removeLayer(concessionLayer);
+                }
+            }
+        });
+
+        document.getElementById('start-analysis-button').addEventListener('click', function () {
+            // alert('Zooming to Kalimantan Barat...');
             zoomToKalbar(); // Panggil fungsi zoom
             });
 
