@@ -89,7 +89,7 @@
         }
 
         h3 {
-            font-size: 20px;
+            font-size: 16px;
             margin-bottom: 10px;
         }
 
@@ -320,6 +320,17 @@
             });
         });
 
+        // Bounding box koordinat wilayah Kalimantan Barat
+        const kalbarBounds = [
+                [2.0833, 108.625], // Koordinat barat laut (northwest)
+                [-3.0737, 114.800] // Koordinat tenggara (southeast)
+            ];
+
+        // Fungsi zoom ke Kalimantan Barat menggunakan koordinat bounding box
+        function zoomToKalbar() {
+            map.fitBounds(kalbarBounds); // Zoom ke bounding box Kalbar
+        }
+
         // Toggle Forest Area
         document.getElementById('forestToggle').addEventListener('change', function () {
             this.checked ? forestLayer.addTo(map) : map.removeLayer(forestLayer);
@@ -336,9 +347,9 @@
         });
 
         document.getElementById('start-analysis-button').addEventListener('click', function () {
-            alert('Starting Analysis...');
-            // Tambahkan fungsi analisis di sini
-        });
+            alert('Zooming to Kalimantan Barat...');
+            zoomToKalbar(); // Panggil fungsi zoom
+            });
 
         new Chart(document.getElementById('deforestationChart').getContext('2d'), {
             type: 'bar',
