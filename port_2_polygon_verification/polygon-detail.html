@@ -194,6 +194,16 @@
       font-weight: 600;
     }
 
+    .loading-animation {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1050;
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
@@ -351,6 +361,14 @@
     </div>
   </div>
 
+  <!-- Loading Animation -->
+  <div id="loading-animation" class="loading-animation">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Revalidation</p>
+  </div>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <!-- Bootstrap JS -->
@@ -472,6 +490,15 @@
             }
         });
         document.getElementById('save-button').style.display = 'none';
+
+        // Show loading animation
+        var loadingAnimation = document.getElementById('loading-animation');
+        loadingAnimation.style.display = 'block';
+
+        // Hide loading animation after 0.5 seconds
+        setTimeout(function() {
+            loadingAnimation.style.display = 'none';
+        }, 1000);
     });
 
     // Toggle Detail Information visibility
