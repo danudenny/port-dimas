@@ -8,6 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- Leaflet Draw CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
   <style>
     /* Style untuk map dan tampilan tetap di atas */
     /* Hapus pengaturan tinggi tetap dari peta */
@@ -82,6 +84,7 @@
       border-radius: 10px;
       box-shadow: none;
       height: 40px;
+      text-align: left;
     }
 
     .input-group-text {
@@ -104,7 +107,7 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       height: 40px;
     }
 
@@ -116,7 +119,7 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       height: 40px;
     }
 
@@ -125,11 +128,11 @@
       border: 1px solid #ddd;
       padding: 10px;
       border-radius: 10px;
-      text-align: center;
+      text-align: left;
       height: 40px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
 
     hr {
@@ -162,6 +165,35 @@
         margin-top: 20px;
     }
 
+    .issue-field {
+        background-color: #fdeaea;
+        color: #dc3545;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 40px;
+    }
+
+    .save-button {
+      margin-bottom: 10px;
+      position: absolute;
+      top: 15px;
+      right: 250px;
+      z-index: 1000;
+      background-color: #d4edda;
+      color: #28a745;
+      display: none;
+    }
+
+    .no-issue {
+      background-color: #e7f9ec;
+      color: #28a745;
+      font-weight: 600;
+    }
+
   </style>
 </head>
 <body>
@@ -172,6 +204,7 @@
 
     <div class="row">
       <div class="col-md-8 map-container position-relative">
+        <button id="save-button" class="btn save-button">Save</button>
         <button id="toggle-detail-button" class="btn btn-outline-primary toggle-button">Hide Detail Information</button>
         <div id="map"></div>
       </div>
@@ -187,8 +220,8 @@
             <div class="form-control">F2204000054122</div>
           </div>
           <div class="col-md-6">
-            <label class="custom-label">District</label>
-            <div class="form-control">Bone, South Sulawesi</div>
+            <label class="custom-label">Issue</label>
+            <div class="issue-field" id="issue-field">Major Overlap</div>
           </div>
         </div>
 
@@ -211,18 +244,18 @@
         <h5 class="info-header">Map Correction</h5>
 
         <!-- Version 1 (Verified) -->
-        <div class="card">
+        <div class="card" id="card-pair-1">
           <div class="card-body">
             <!-- Version section with buttons -->
             <div class="d-flex justify-content-between">
-              <h6><span class="badge badge-major-overlap">Major overlap : Pair 1</span></h6>
+              <h6><span class="badge badge-major-overlap" id="badge-pair-1">Major overlap : Pair 1</span></h6>
               <div class="dropdown">
                 <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Action
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#">View</a></li>
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Zoom to polygon</a></li>
+                    <li><a class="dropdown-item edit-polygon" href="#">Edit</a></li>
                 </ul>
               </div>
             </div>
@@ -239,8 +272,8 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label class="custom-label">Data Type</label>
-                <div class="data-type">Auto correction</div>
+                <label class="custom-label">Issue</label>
+                <div class="data-type-nonverified" id="issue-pair-1">Major overlap</div>
               </div>
             </div>
 
@@ -263,18 +296,18 @@
         </div>
 
         <!-- Version 2 (Not Verified) -->
-        <div class="card">
+        <div class="card" id="card-pair-2">
           <div class="card-body">
             <!-- Version section with buttons -->
             <div class="d-flex justify-content-between">
-              <h6><span class="badge badge-nonverified">Major overlap : Pair 2</span></h6>
+              <h6><span class="badge badge-nonverified" id="badge-pair-2">Major overlap : Pair 2</span></h6>
               <div class="dropdown">
                 <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                     Action
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                    <li><a class="dropdown-item" href="#">View</a></li>
-                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                    <li><a class="dropdown-item" href="#">Zoom to polygon</a></li>
+                    <li><a class="dropdown-item edit-polygon" href="#">Edit</a></li>
                 </ul>
               </div>
             </div>
@@ -291,8 +324,8 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <label class="custom-label">Data Type</label>
-                <div class="data-type-nonverified">Survey</div>
+                <label class="custom-label">Issue</label>
+                <div class="data-type-nonverified" id="issue-pair-2">Major overlap</div>
               </div>
             </div>
 
@@ -322,6 +355,7 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 
   <script>
       // Fungsi untuk menyamakan tinggi map dengan konten sebelah kanan
@@ -360,6 +394,85 @@
       [-5.1400, 119.4200]
     ], {color: 'orange'}).addTo(map);
     polygon2.bindPopup("Version 2 (Not Verified)");
+
+    // Initialize Leaflet Draw
+    var editableLayers = new L.FeatureGroup();
+    map.addLayer(editableLayers);
+
+    var drawControl = new L.Control.Draw({
+        edit: {
+            featureGroup: editableLayers,
+            poly: {
+                allowIntersection: false
+            }
+        },
+        draw: false
+    });
+    map.addControl(drawControl);
+
+    // Function to enable editing of polygon
+    function enablePolygonEditing(polygon) {
+        editableLayers.addLayer(polygon);
+        polygon.editing.enable();
+        document.getElementById('save-button').style.display = 'block';
+    }
+
+    // Add event listeners for "Edit" actions
+    document.querySelectorAll('.edit-polygon').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            const badgeText = this.closest('.dropdown').previousElementSibling.querySelector('.badge').textContent;
+            if (badgeText.includes('Pair 1')) {
+                enablePolygonEditing(polygon1);
+            } else if (badgeText.includes('Pair 2')) {
+                enablePolygonEditing(polygon2);
+            }
+        });
+    });
+
+    // Function to check for overlaps
+    function checkForOverlaps(polygon) {
+        // Dummy function to simulate overlap check
+        // Replace this with actual logic to check for overlaps
+        return false; // Assume no overlap for demonstration
+    }
+
+    // Save button functionality
+    document.getElementById('save-button').addEventListener('click', function() {
+        console.log('Save button clicked');
+        editableLayers.eachLayer(function(layer) {
+            if (layer.editing && layer.editing.enabled()) {
+                layer.editing.disable();
+                // Save the edited polygon data
+                var editedData = layer.toGeoJSON();
+                console.log('Edited Polygon Data:', editedData);
+                // You can send the editedData to your server here
+
+                // Check for overlaps
+                var hasOverlap = checkForOverlaps(layer);
+                if (!hasOverlap) {
+                    // Update issue field to No issue and change color to green
+                    var issueField = document.getElementById('issue-field');
+                    issueField.textContent = 'No issue';
+                    issueField.classList.remove('issue-field');
+                    issueField.classList.add('no-issue');
+
+                    // Update the issue fields for Pair 1 and Pair 2
+                    document.getElementById('issue-pair-1').textContent = 'No issue';
+                    document.getElementById('issue-pair-1').classList.remove('data-type-nonverified');
+                    document.getElementById('issue-pair-1').classList.add('no-issue');
+                    document.getElementById('issue-pair-2').textContent = 'No issue';
+                    document.getElementById('issue-pair-2').classList.remove('data-type-nonverified');
+                    document.getElementById('issue-pair-2').classList.add('no-issue');
+
+                    // Remove the badges for Pair 1 and Pair 2
+                    document.getElementById('badge-pair-1').style.display = 'none';
+                    document.getElementById('badge-pair-2').style.display = 'none';
+                }
+            }
+        });
+        document.getElementById('save-button').style.display = 'none';
+    });
 
     // Toggle Detail Information visibility
     document.getElementById('toggle-detail-button').addEventListener('click', function() {
