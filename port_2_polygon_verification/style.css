@@ -1,0 +1,21 @@
+/* Custom styles to match the color and appearance */
+.bg-light-success {
+    background-color: #e7f9ec;
+  }
+  
+  .text-success {
+    color: #28a745;
+  }
+  
+  .badge {
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+    border-radius: 0.5em;
+  }
+  
+  .btn-light {
+    font-size: 0.85em;
+    padding: 0.25em 0.75em;
+    border-radius: 0.25em;
+  }
+  

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polygon Detail</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    /* Style untuk map dan tampilan tetap di atas */
+    /* Hapus pengaturan tinggi tetap dari peta */
+    #map {
+      width: 100%;
+      height: calc(100vh - 40px); /* Adjust height to full screen minus some margin */
+      border-radius: 10px;
+    }
+
+    /* Kontainer untuk menyelaraskan map dengan informasi */
+    .sync-height {
+      display: flex;
+    }
+
+    .scroll-container {
+      max-height: calc(100vh - 40px); /* Adjust height to full screen minus some margin */
+      overflow-y: auto;
+      padding-right: 15px;
+    }
+
+    .container {
+      margin-top: 20px;
+    }
+
+    .map-container {
+      margin-bottom: 20px;
+    }
+
+    .badge-verified {
+      background-color: #28a745;
+      color: white;
+      padding: 0.5em 1em;
+      border-radius: 10px;
+    }
+
+    .badge-nonverified {
+      background-color: #dc3545;
+      color: white;
+      padding: 0.5em 1em;
+      border-radius: 10px;
+    }
+
+    .badge-major-overlap {
+      background-color: #dc3545; /* Red color */
+      color: white;
+      padding: 0.5em 1em;
+      border-radius: 10px;
+    }
+
+    .info-header {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .card {
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .edit-button {
+      border-radius: 8px;
+      padding: 8px 16px;
+    }
+
+    .form-control {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: none;
+      height: 40px;
+    }
+
+    .input-group-text {
+      background-color: transparent;
+      border: none;
+      font-size: 1.2em;
+      margin-left: -8px;
+    }
+
+    .form-control:focus {
+      border-color: #28a745;
+      box-shadow: none;
+    }
+
+    .data-type {
+      background-color: #e7f9ec;
+      padding: 10px;
+      border-radius: 10px;
+      color: #28a745;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+    }
+
+    .data-type-nonverified {
+      background-color: #fdeaea;
+      padding: 10px;
+      border-radius: 10px;
+      color: #dc3545;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+    }
+
+    .updated-by {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    hr {
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+    }
+
+    /* Align the Data Fields Properly */
+    .data-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    /* For rounded corners in card */
+    .card {
+      border-radius: 10px;
+    }
+
+    .toggle-button {
+      margin-bottom: 10px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 1000;
+    }
+
+    .extra-space {
+        margin-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <a href="index.html" class="text-success fw-bold">Back to polygon verification</a>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 map-container position-relative">
+        <button id="toggle-detail-button" class="btn btn-outline-primary toggle-button">Hide Detail Information</button>
+        <div id="map"></div>
+      </div>
+
+      <div class="col-md-4 scroll-container" id="detail-information">
+        <!-- Detail Information -->
+        <h4 class="info-header">Detail Information</h4>
+
+        <div class="row">
+          <!-- Baris pertama: Farmer ID dan District -->
+          <div class="col-md-6">
+            <label class="custom-label">Farmer ID</label>
+            <div class="form-control">F2204000054122</div>
+          </div>
+          <div class="col-md-6">
+            <label class="custom-label">District</label>
+            <div class="form-control">Bone, South Sulawesi</div>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <!-- Baris kedua: Farmer NR dan Area Def -->
+          <div class="col-md-6">
+            <label class="custom-label">Farmer NR</label>
+            <div class="form-control">Dimas</div>
+          </div>
+          <div class="col-md-6">
+            <label class="custom-label">Area def</label>
+            <div class="form-control">3.10 (ha)</div>
+          </div>
+        </div>
+
+        <!-- Add extra space -->
+        <div class="extra-space"></div>
+
+        <!-- Map Correction Section -->
+        <h5 class="info-header">Map Correction</h5>
+
+        <!-- Version 1 (Verified) -->
+        <div class="card">
+          <div class="card-body">
+            <!-- Version section with buttons -->
+            <div class="d-flex justify-content-between">
+              <h6><span class="badge badge-major-overlap">Major overlap : Pair 1</span></h6>
+              <div class="dropdown">
+                <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Action
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">View</a></li>
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                </ul>
+              </div>
+            </div>
+            <hr />
+
+            <!-- Data Fields in 4 columns (2 rows) -->
+            <div class="row">
+              <div class="col-md-6">
+                <label class="custom-label">Farmer ID</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" value="F2215420054122" readonly>
+                  <span class="input-group-text">
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="custom-label">Data Type</label>
+                <div class="data-type">Auto correction</div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="custom-label">Date</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" value="02/12/2023" readonly>
+                  <span class="input-group-text">
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="custom-label">Updated by</label>
+                <div class="updated-by">John Doe</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Version 2 (Not Verified) -->
+        <div class="card">
+          <div class="card-body">
+            <!-- Version section with buttons -->
+            <div class="d-flex justify-content-between">
+              <h6><span class="badge badge-nonverified">Major overlap : Pair 2</span></h6>
+              <div class="dropdown">
+                <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                    Action
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                    <li><a class="dropdown-item" href="#">View</a></li>
+                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                </ul>
+              </div>
+            </div>
+            <hr />
+
+            <!-- Data Fields in 4 columns (2 rows) -->
+            <div class="row">
+              <div class="col-md-6">
+                <label class="custom-label">Farmer ID</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" value="02/12/2023" readonly>
+                  <span class="input-group-text">
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="custom-label">Data Type</label>
+                <div class="data-type-nonverified">Survey</div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="custom-label">Date</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" value="02/12/2023" readonly>
+                  <span class="input-group-text">
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="custom-label">Updated by</label>
+                <div class="updated-by">John Doe</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+      // Fungsi untuk menyamakan tinggi map dengan konten sebelah kanan
+  function syncMapHeight() {
+    var mapElement = document.getElementById('map');
+    var infoElement = document.querySelector('.scroll-container');
+    mapElement.style.height = infoElement.offsetHeight + 'px';
+  }
+  // Jalankan fungsi ketika halaman dimuat
+  window.onload = syncMapHeight;
+  // Jalankan fungsi ketika ukuran jendela diubah (untuk responsif)
+  window.onresize = syncMapHeight;
+    // Inisialisasi Leaflet Map
+    var map = L.map('map').setView([-5.1406, 119.4221], 13);  // Koordinat Bone, Sulawesi
+
+    // Tambahkan basemap OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Polygon 1 - Version 1 (Verified)
+    var polygon1 = L.polygon([
+      [-5.1396, 119.4211],
+      [-5.1406, 119.4221],
+      [-5.1416, 119.4215],
+      [-5.1405, 119.4205]
+    ], {color: 'green'}).addTo(map);
+    polygon1.bindPopup("Version 1 (Verified)");
+
+    // Polygon 2 - Version 2 (Not Verified)
+    var polygon2 = L.polygon([
+      [-5.1390, 119.4210],
+      [-5.1400, 119.4220],
+      [-5.1410, 119.4210],
+      [-5.1400, 119.4200]
+    ], {color: 'orange'}).addTo(map);
+    polygon2.bindPopup("Version 2 (Not Verified)");
+
+    // Toggle Detail Information visibility
+    document.getElementById('toggle-detail-button').addEventListener('click', function() {
+        const detailInfo = document.getElementById('detail-information');
+        const mapContainer = document.querySelector('.map-container');
+        const mapElement = document.getElementById('map');
+        if (detailInfo.style.display === 'none') {
+            detailInfo.style.display = 'block';
+            mapContainer.classList.remove('col-md-12');
+            mapContainer.classList.add('col-md-8');
+            this.textContent = 'Hide Detail Information';
+        } else {
+            detailInfo.style.display = 'none';
+            mapContainer.classList.remove('col-md-8');
+            mapContainer.classList.add('col-md-12');
+            this.textContent = 'Show Detail Information';
+        }
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    });
+  </script>
+</body>
+</html>
