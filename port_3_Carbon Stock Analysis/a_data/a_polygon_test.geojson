@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "a_polygon_test",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "name": "uga" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 97.830617717423934, 3.53876418357539 ], [ 97.868007967090307, 3.538810762067639 ], [ 97.867990470256345, 3.50110899904145 ], [ 97.830701490226943, 3.50106831701099 ], [ 97.830617717423934, 3.53876418357539 ] ] ] ] } }
+]
+}
