@@ -17,7 +17,12 @@
       </div>
     </div>
 
-    <div class="table-responsive">
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary me-2" id="showTableButton">Show Table</button>
+      <button class="btn btn-secondary" id="hideTableButton">Hide Table</button>
+    </div>
+
+    <div class="table-responsive" id="detailTable" style="width: 100%;">
       <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
@@ -71,6 +76,15 @@
     // Ketika klik Polygon verification, buka halaman baru (polygon-detail.html)
     document.getElementById('polygonVerification').addEventListener('click', function() {
       window.location.href = 'polygon-detail.html';
+    });
+
+    // Show and hide table logic
+    document.getElementById('showTableButton').addEventListener('click', function() {
+      document.getElementById('detailTable').style.display = 'block';
+    });
+
+    document.getElementById('hideTableButton').addEventListener('click', function() {
+      document.getElementById('detailTable').style.display = 'none';
     });
   </script>
 </body>

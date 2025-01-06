@@ -2,8 +2,20 @@
 /* Hapus pengaturan tinggi tetap dari peta */
 #map {
   width: 100%;
-  height: calc(100vh - 40px); /* Adjust height to full screen minus some margin */
+  height: 80vh; /* Adjust height to 80% of the viewport height */
   border-radius: 10px;
+}
+
+.table-container {
+  width: 65%; /* Ensure the table width matches the map width */
+  height: 20vh; /* Adjust height to 20% of the viewport height */
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+  z-index: 1000;
+  margin-top: 20px; /* Add margin to separate the table from the map */
+  position: absolute; /* Overlay on the map */
+  bottom: 0; /* Position at the bottom */
+  display: none; /* Initially hidden */
 }
 
 /* Kontainer untuk menyelaraskan map dengan informasi */
@@ -140,12 +152,17 @@ hr {
   border-radius: 10px;
 }
 
-.toggle-button {
-  margin-bottom: 10px;
+.toggle-button, .show-table-button, .hide-table-button {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 150px; /* Set top position */
+  right: -50px; /* Set right position */
   z-index: 1000;
+  background-color: #ff9800; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transform: rotate(270deg); /* Rotate 270 degrees */
 }
 
 .extra-space {
@@ -200,4 +217,47 @@ hr {
   margin-top: 10px;
   font-size: 1.2rem;
   color: #007bff;
+}
+
+/* Styles for the Show Table and Hide Table buttons */
+.show-table-button, .hide-table-button {
+  position: absolute;
+  top: 335px; /* Set top position */
+  right: -16px; /* Set right position */
+  z-index: 1000;
+  background-color: #ff9800; /* Green background */
+  color: white; /* White text */
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transform: rotate(270deg); /* Rotate 270 degrees */
+}
+
+.hide-table-button {
+  display: none; /* Initially hidden */
+}
+
+.basemap-control {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.basemap-option {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #555;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.basemap-option.active {
+  background-color: #ff9800;
+  color: white;
 }
