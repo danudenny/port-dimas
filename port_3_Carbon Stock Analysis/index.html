@@ -486,7 +486,7 @@
             loadingOverlay.style.display = "flex";
             setTimeout(() => {
                 loadingOverlay.style.display = "none";
-                alert("Analysis complete!");
+                // Analysis complete logic here
             }, 5000);
         });
 
@@ -498,10 +498,8 @@
                 if (event.target.checked) {
                     yearSlider.value = 2020;
                     document.getElementById(`${yearSlider.id}-value`).textContent = 2020;
-                    alert(`${layerId} layer enabled`);
                     // Add layer to map
                 } else {
-                    alert(`${layerId} layer disabled`);
                     // Remove layer from map
                 }
             });
