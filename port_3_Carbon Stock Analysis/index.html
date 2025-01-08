@@ -24,7 +24,7 @@
             right: 0;
             width: 360px;
             height: 100vh;
-            background-color: #1c2533; /* No transparency */
+            background-color: #1c2533;
             color: white;
             display: flex;
             flex-direction: column;
@@ -91,19 +91,6 @@
         .footer {
             padding: 15px;
             border-top: 1px solid #333;
-            text-align: center;
-            background-color: #1c2533;
-            color: white;
-            font-size: 18px; /* Increase font size */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer img {
-            width: 30px;
-            height: 30px;
         }
 
         #uploadAOI {
@@ -124,178 +111,8 @@
             background-color: #005fcc;
         }
 
-        #runAnalysis {
-            width: 100%;
-            padding: 15px;
-            background-color: #1e90ff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #runAnalysis:hover {
-            background-color: #005fcc;
-        }
-
         .tab-content.hidden {
             display: none;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 34px;
-            height: 20px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #1e90ff;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
-
-        .year-slider {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .year-slider + span {
-            display: block;
-            text-align: center;
-            margin-top: 5px;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .slider-container {
-            margin-bottom: 20px;
-        }
-
-        .legend {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .legend-color {
-            width: 14px;
-            height: 14px;
-            margin-right: 5px;
-            border-radius: 2px;
-        }
-
-        .leaflet-control-layers {
-            display: none;
-            background-color: #fff;
-            border-radius: 4px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
-        }
-
-        .leaflet-control-layers-expanded {
-            padding: 6px 10px;
-            color: #333;
-        }
-
-        .leaflet-control-layers-expanded label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            display: none;
-        }
-
-        .loading-spinner {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #1e90ff;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        #basemap-switch {
-            position: absolute;
-            top: 15px;
-            right: 380px;
-            display: flex;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-
-        .basemap-option {
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #555;
-            border: 1px solid #ccc;
-            background-color: white;
-        }
-
-        .basemap-option.active {
-            background-color: #1e90ff;
-            color: white;
         }
     </style>
 </head>
@@ -305,7 +122,7 @@
         <!-- Tabs -->
         <div class="tabs">
             <div class="tab active" data-tab="aoi-tab">MY AOI</div>
-            <div class="tab" data-tab="analysis-tab">ANALYSIS</div>
+            <div class="tab" data-tab="subscription-tab">MY SUBSCRIPTIONS</div>
         </div>
 
         <!-- Tab Content -->
@@ -314,166 +131,63 @@
             <div id="aoi-tab" class="tab-content">
                 <div class="aoi-item">
                     <div>
-                        <i class="fas fa-map-marker-alt"></i> Kalbar
+                        <i class="fas fa-map-marker-alt"></i> kloter1_urk_LV
                         <span>(05.09.2023)</span>
                     </div>
                     <i class="fas fa-ellipsis-v menu-icon"></i>
                 </div>
                 <div class="aoi-item">
                     <div>
-                        <i class="fas fa-map-marker-alt"></i> Luwu Utara
+                        <i class="fas fa-map-marker-alt"></i> Buntu Labo, Luwu Utara
                         <span>(13.06.2023)</span>
                     </div>
                     <i class="fas fa-ellipsis-v menu-icon"></i>
                 </div>
                 <div class="aoi-item">
                     <div>
-                        <i class="fas fa-map-marker-alt"></i> Banjarmasin
+                        <i class="fas fa-map-marker-alt"></i> tes_2
                         <span>(13.06.2022)</span>
                     </div>
                     <i class="fas fa-ellipsis-v menu-icon"></i>
                 </div>
                 <div class="aoi-item">
                     <div>
-                        <i class="fas fa-map-marker-alt"></i> Aceh
+                        <i class="fas fa-map-marker-alt"></i> DEMO AOI
                         <span>(13.06.2022)</span>
                     </div>
                     <i class="fas fa-ellipsis-v menu-icon"></i>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button id="uploadAOI" style="flex: 1;">
-                        Upload AOI <i class="fas fa-upload"></i>
-                    </button>
-                    <button id="runAnalysis" style="flex: 1;">
-                        Run Analysis <i class="fas fa-play"></i>
-                    </button>
-                </div>
-                <input type="file" id="fileInput" accept=".geojson" style="display: none;" />
+                <button id="uploadAOI">
+                    Upload AOI <i class="fas fa-upload"></i>
+                </button>
             </div>
 
-            <!-- Analysis Content -->
-            <div id="analysis-tab" class="tab-content hidden">
-                <div class="aoi-item" style="margin-bottom: 10px;">
+            <!-- My Subscription Content -->
+            <div id="subscription-tab" class="tab-content hidden">
+                <div class="subscription-item">
                     <div>
-                        <i class="fas fa-layer-group"></i> Carbon Stock
+                        <i class="fas fa-bookmark"></i> Subscription Plan 1
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="layer1" name="layer1" checked>
-                        <span class="slider round"></span>
-                    </label>
+                    <span>Active</span>
                 </div>
-                <div class="slider-container" style="margin-bottom: 10px;">
-                    <input type="range" min="2020" max="2024" value="2023" class="year-slider" id="year1">
-                    <span id="year1-value">2023</span>
-                </div>
-                <div class="legend" style="padding-left: 20px; margin-bottom: 10px;">
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: red;"></span>
-                        <span>Very Low</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: orange;"></span>
-                        <span>Low</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: yellow;"></span>
-                        <span>Medium</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: lightgreen;"></span>
-                        <span>High</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: green;"></span>
-                        <span>Very High</span>
-                    </div>
-                </div>
-                <div class="aoi-item" style="margin-bottom: 10px;">
+                <div class="subscription-item">
                     <div>
-                        <i class="fas fa-layer-group"></i> Vegetation Index
+                        <i class="fas fa-bookmark"></i> Subscription Plan 2
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="layer2" name="layer2">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="slider-container" style="margin-bottom: 10px;">
-                    <input type="range" min="2020" max="2024" value="2023" class="year-slider" id="year2">
-                    <span id="year2-value">2023</span>
-                </div>
-                <div class="legend" style="padding-left: 20px; margin-bottom: 10px;">
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: red;"></span>
-                        <span>Very Low</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: orange;"></span>
-                        <span>Low</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: yellow;"></span>
-                        <span>Medium</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: lightgreen;"></span>
-                        <span>High</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background-color: green;"></span>
-                        <span>Very High</span>
-                    </div>
-                </div>
-                <div class="aoi-item" style="margin-bottom: 10px;">
-                    <div>
-                        <i class="fas fa-layer-group"></i> Super Reso Basemap (1m)
-                    </div>
-                    <label class="switch">
-                        <input type="checkbox" id="layer3" name="layer3">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="slider-container" style="margin-bottom: 10px;">
-                    <input type="range" min="2020" max="2024" value="2023" class="year-slider" id="year3">
-                    <span id="year3-value">2023</span>
+                    <span>Expired</span>
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" alt="Forest Logo">
-            <p>CARBON STOCK ANALYSIS</p>
-        </div>
-    </div>
-
-    <div id="basemap-switch">
-        <div class="basemap-option active" id="btn-light">Light</div>
-        <div class="basemap-option" id="btn-dark">Dark</div>
-        <div class="basemap-option" id="btn-satellite">Satellite</div>
-    </div>
-
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const map = L.map('map').setView([-2.6835, 119.5712], 6);
 
-        const baseLayers = {
-            "OpenStreetMap": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap contributors'
-            }),
-            "Satellite": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-                maxZoom: 17,
-                attribution: '© OpenTopoMap contributors'
-            })
-        };
-
-        baseLayers["OpenStreetMap"].addTo(map);
-
-        L.control.layers(baseLayers, null, { position: 'topleft' }).addTo(map);
-
-        let carbonStockLayer;
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
         // Tab switching logic
         const tabs = document.querySelectorAll('.tab');
@@ -491,84 +205,7 @@
         });
 
         document.getElementById("uploadAOI").addEventListener("click", () => {
-            document.getElementById("fileInput").click();
-        });
-
-        document.getElementById("fileInput").addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const geojson = JSON.parse(e.target.result);
-                    const geojsonLayer = L.geoJSON(geojson, {
-                        style: {
-                            color: 'blue',
-                            weight: 2,
-                            fillOpacity: 0
-                        }
-                    }).addTo(map);
-                    map.fitBounds(geojsonLayer.getBounds());
-                };
-                reader.readAsText(file);
-            }
-        });
-
-        document.getElementById("runAnalysis").addEventListener("click", () => {
-            const loadingOverlay = document.getElementById("loadingOverlay");
-            loadingOverlay.style.display = "flex";
-            setTimeout(() => {
-                loadingOverlay.style.display = "none";
-                // Analysis complete logic here
-            }, 5000);
-        });
-
-        // Layer toggle logic
-        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', (event) => {
-                const layerId = event.target.id;
-                const yearSlider = document.getElementById(`year${layerId[layerId.length - 1]}`);
-                if (event.target.checked) {
-                    yearSlider.value = 2020;
-                    document.getElementById(`${yearSlider.id}-value`).textContent = 2020;
-                    // Add layer to map
-                } else {
-                    // Remove layer from map
-                }
-            });
-        });
-
-        // Year slider logic
-        document.querySelectorAll('.year-slider').forEach(slider => {
-            slider.addEventListener('input', (event) => {
-                const yearValue = document.getElementById(`${event.target.id}-value`);
-                yearValue.textContent = event.target.value;
-
-                if (event.target.id === 'year1') {
-                    const year = event.target.value;
-                    let wmsUrl;
-                    switch (year) {
-                        case '2020':
-                            wmsUrl = 'http://localhost:8080/geoserver/gwc/service/tms/1.0.0/luc_ghg_1%3AAGBD_2017@EPSG%3A900913@png/{z}/{x}/{-y}.png';
-                            break;
-                        case '2021':
-                            wmsUrl = 'http://localhost:8080/geoserver/gwc/service/tms/1.0.0/luc_ghg_1%3AAGBD_2018@EPSG%3A900913@png/{z}/{x}/{-y}.png';
-                            break;
-                        case '2022':
-                            wmsUrl = 'http://localhost:8080/geoserver/gwc/service/tms/1.0.0/luc_ghg_1%3AAGBD_2019@EPSG%3A900913@png/{z}/{x}/{-y}.png';
-                            break;
-                        case '2023':
-                            wmsUrl = 'http://localhost:8080/geoserver/gwc/service/tms/1.0.0/luc_ghg_1%3AAGBD_2020@EPSG%3A900913@png/{z}/{x}/{-y}.png';
-                            break;
-                        default:
-                            wmsUrl = '';
-                    }
-                    if (carbonStockLayer) {
-                        map.removeLayer(carbonStockLayer);
-                    }
-                    carbonStockLayer = L.tileLayer(wmsUrl);
-                    carbonStockLayer.addTo(map);
-                }
-            });
+            alert("Fitur Upload AOI akan segera hadir!");
         });
     </script>
 </body>
