@@ -78,4 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
             { name: 'Factory C', data: [3000, 3200, 3400, 3500, 3600], color: '#f44336' }
         ]
     });
+
+    exportButton.addEventListener("click", () => {
+        const pdfUrl = "https://drive.google.com/uc?export=download&id=1MG8m499kLQmj1blEvPgMxefSqTkNiims";
+        const link = document.createElement("a");
+        link.href = pdfUrl;
+        link.download = "Manufacture_Emission_Report_1.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
 });
