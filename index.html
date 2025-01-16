@@ -130,9 +130,16 @@
                 <a href="#"><i class="icon-googleplus"></i></a>
                 <a href="#"><i class="icon-dribbble2"></i></a>
               </p>
-              <p><a href="work.html" class="btn btn-primary btn-outline">View My Works</a>
-                 <a href="data\CV_Dimas_Perceka.pdf" class="btn btn-primary btn-outline" download>Download My CV</a>
-              </p>
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary btn-outline dropdown-toggle" onclick="toggleDropdown()">
+                  View My Works
+                </button>
+                <div class="dropdown-menu" id="dropdown-menu">
+                  <a class="dropdown-item" href="work.html">My Works</a>
+                  <a class="dropdown-item" href="https://github.com/ugadimas25" target="_blank">My Github</a>
+                </div>
+              </div>
+              <a href="data\CV_Dimas_Perceka.pdf" class="btn btn-primary btn-outline" download>Download My CV</a>
             </div>
           </div>
         </div>
@@ -338,6 +345,12 @@
 <!-- Main JS (Do not remove) -->
 <script src="js/main.js"></script>
 
+<script>
+  function toggleDropdown() {
+    var dropdownMenu = document.getElementById("dropdown-menu");
+    dropdownMenu.classList.toggle("show");
+  }
+</script>
 </body>
 </html>
 
