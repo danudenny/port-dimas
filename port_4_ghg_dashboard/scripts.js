@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Bar Chart: Emissions and Energy Usage
     Highcharts.chart('barChart', {
         chart: { type: 'column' },
-        title: { text: 'Emissions and Energy Usage per Production Stage (2019-2023)' },
-        xAxis: { categories: ['Material Intake', 'Assembly', 'Quality Control', 'Packaging', 'Maintenance', 'Distribution'] },
+        title: { text: 'Emissions and Energy Usage per Process Stage (2019-2023)' },
+        xAxis: { categories: ['Planting', 'Growing', 'Harvesting', 'Processing', 'Packaging', 'Distribution'] },
         yAxis: { title: { text: 'Emissions (tCO2e) / Energy (kWh)' } },
         series: [
             { name: 'CO2 Emissions', data: [120, 180, 110, 90, 60, 100], color: '#007bff' },
@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
         xAxis: { categories: ['2019', '2020', '2021', '2022', '2023'] },
         yAxis: { title: { text: 'Total Emissions (tCO2e)' } },
         series: [
-            { name: 'Factory A', data: [150, 140, 130, 145, 160], color: '#4caf50' },
-            { name: 'Factory B', data: [180, 200, 190, 210, 220], color: '#2196f3' },
-            { name: 'Factory C', data: [100, 90, 95, 85, 80], color: '#ff5722' }
+            { name: 'Farm A', data: [150, 140, 130, 145, 160], color: '#4caf50' },
+            { name: 'Farm B', data: [180, 200, 190, 210, 220], color: '#2196f3' },
+            { name: 'Farm C', data: [100, 90, 95, 85, 80], color: '#ff5722' }
         ]
     });
 
@@ -33,19 +33,19 @@ document.addEventListener("DOMContentLoaded", function () {
         series: [{
             name: 'Energy Usage',
             data: [
-                { name: 'Material Intake', y: 20, color: '#4caf50' },
-                { name: 'Assembly', y: 30, color: '#ff9800' },
-                { name: 'Quality Control', y: 25, color: '#f44336' },
-                { name: 'Packaging', y: 15, color: '#03a9f4' },
-                { name: 'Maintenance', y: 10, color: '#9e9e9e' }
+                { name: 'Planting', y: 20, color: '#4caf50' },
+                { name: 'Growing', y: 30, color: '#ff9800' },
+                { name: 'Harvesting', y: 25, color: '#f44336' },
+                { name: 'Processing', y: 15, color: '#03a9f4' },
+                { name: 'Packaging', y: 10, color: '#9e9e9e' }
             ]
         }]
     });
 
     Highcharts.chart('stackedChartEmissions', {
         chart: { type: 'bar' },
-        title: { text: 'GHG Emissions Types per Production Stage' },
-        xAxis: { categories: ['Material Intake', 'Assembly', 'Quality Control', 'Packaging', 'Maintenance', 'Distribution'] },
+        title: { text: 'GHG Emissions Types per Process Stage' },
+        xAxis: { categories: ['Planting', 'Growing', 'Harvesting', 'Processing', 'Packaging', 'Distribution'] },
         yAxis: { min: 0, title: { text: 'Total GHG Emissions (tCO2e)' } },
         plotOptions: { series: { stacking: 'normal' } },
         series: [
@@ -61,9 +61,9 @@ document.addEventListener("DOMContentLoaded", function () {
         xAxis: { categories: ['2019', '2020', '2021', '2022', '2023'] },
         yAxis: { title: { text: 'Total Emissions (tCO2e)' } },
         series: [
-            { name: 'Factory A', data: [150, 160, 170, 180, 190], color: '#007bff' },
-            { name: 'Factory B', data: [200, 210, 220, 230, 240], color: '#ff9800' },
-            { name: 'Factory C', data: [100, 110, 115, 120, 125], color: '#e91e63' }
+            { name: 'Farm A', data: [150, 160, 170, 180, 190], color: '#007bff' },
+            { name: 'Farm B', data: [200, 210, 220, 230, 240], color: '#ff9800' },
+            { name: 'Farm C', data: [100, 110, 115, 120, 125], color: '#e91e63' }
         ]
     });
 
@@ -73,9 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
         xAxis: { categories: ['2019', '2020', '2021', '2022', '2023'] },
         yAxis: { title: { text: 'Energy Usage (kWh)' } },
         series: [
-            { name: 'Factory A', data: [5000, 5200, 5400, 5500, 5700], color: '#4caf50' },
-            { name: 'Factory B', data: [6000, 6200, 6400, 6600, 6800], color: '#2196f3' },
-            { name: 'Factory C', data: [3000, 3200, 3400, 3500, 3600], color: '#f44336' }
+            { name: 'Farm A', data: [5000, 5200, 5400, 5500, 5700], color: '#4caf50' },
+            { name: 'Farm B', data: [6000, 6200, 6400, 6600, 6800], color: '#2196f3' },
+            { name: 'Farm C', data: [3000, 3200, 3400, 3500, 3600], color: '#f44336' }
         ]
     });
 
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const pdfUrl = "https://drive.google.com/uc?export=download&id=1MG8m499kLQmj1blEvPgMxefSqTkNiims";
         const link = document.createElement("a");
         link.href = pdfUrl;
-        link.download = "Manufacture_Emission_Report_1.pdf";
+        link.download = "Agriculture_Emission_Report_1.pdf";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
