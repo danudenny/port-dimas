@@ -298,10 +298,129 @@
         .comparison-button:hover {
             background-color: #005fcc;
         }
+
+        .info-icon {
+            position: absolute;
+            top: 10px;
+            right: 380px; /* Adjusted to be to the left of the sidebar */
+            font-size: 24px;
+            color: #1e90ff;
+            cursor: pointer;
+            z-index: 1001; /* Ensure the icon is above the map */
+        }
+
+        .info-popup {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 380px; /* Adjusted to be to the left of the sidebar */
+            width: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            z-index: 1001; /* Ensure the popup is above the map */
+        }
+
+        .info-popup h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .info-popup p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .info-popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .info-popup ul {
+            padding-left: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .info-popup ul li {
+            margin-bottom: 10px;
+        }
+
+        .info-popup .backend-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .info-popup .backend-button:hover {
+            background-color: #005fcc;
+        }
+
+        .backend-image {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 380px; /* Adjusted to be to the left of the sidebar */
+            width: 700px; /* Increased width */
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            z-index: 1001; /* Ensure the image is above the map */
+        }
+
+        .backend-image img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .backend-image .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            color: #333;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <i class="fas fa-info-circle info-icon" id="infoIcon"></i>
+    <div class="info-popup" id="infoPopup">
+        <span class="close-btn" id="closePopup">&times;</span>
+        <h3>Information</h3>
+        <p>This application provides the following features:</p>
+        <ul>
+            <li>Upload AOI (Area of Interest) in GeoJSON format.</li>
+            <li>Run analysis on the uploaded AOI.</li>
+            <li>Toggle different layers such as Carbon Stock and Vegetation Index.</li>
+            <li>Adjust the year slider to view data for different years.</li>
+            <li>Download sample GeoJSON files.</li>
+            <li>Compare Sentinel-2 and Super Resolution data.</li>
+        </ul>
+        <button class="backend-button" id="backendFlow">Show backend flow</button>
+    </div>
+    <div class="backend-image" id="backendImage">
+        <span class="close-btn" id="closeImage">&times;</span>
+        <img src="b_images/Flow_backend_carbon_analysis.png" alt="Backend Flow">
+    </div>
     <button class="comparison-button" id="showComparison">S2 vs S2 Super Reso</button>
     <button class="download-button" id="downloadGeojson">Download Sample Geojson</button>
     <div class="sidebar">
@@ -650,6 +769,22 @@
         document.getElementById("showComparison").addEventListener("click", () => {
             const comparisonUrl = "https://storage.googleapis.com/sentinel-s2dr3/s2dr3demo15.html?ds=US-T16TGP-20240720-u90963b1#14.7/43.44027/-83.74039";
             window.open(comparisonUrl, '_blank');
+        });
+
+        document.getElementById("infoIcon").addEventListener("click", () => {
+            document.getElementById("infoPopup").style.display = "block";
+        });
+
+        document.getElementById("closePopup").addEventListener("click", () => {
+            document.getElementById("infoPopup").style.display = "none";
+        });
+
+        document.getElementById("backendFlow").addEventListener("click", () => {
+            document.getElementById("backendImage").style.display = "block";
+        });
+
+        document.getElementById("closeImage").addEventListener("click", () => {
+            document.getElementById("backendImage").style.display = "none";
         });
     </script>
 </body>
