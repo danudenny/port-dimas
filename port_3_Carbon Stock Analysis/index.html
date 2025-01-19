@@ -24,7 +24,7 @@
             right: 0;
             width: 360px;
             height: 100vh;
-            background-color: #1c2533;
+            background-color: rgba(28, 37, 51, 0.9); /* Adjusted for transparency */
             color: white;
             display: flex;
             flex-direction: column;
@@ -280,10 +280,29 @@
         .download-button:hover {
             background-color: #005fcc;
         }
+
+        .comparison-button {
+            position: absolute;
+            bottom: 20px;
+            right: 630px; /* Adjusted to add more space between the buttons */
+            padding: 10px 20px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1001; /* Ensure the button is above the map */
+        }
+
+        .comparison-button:hover {
+            background-color: #005fcc;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <button class="comparison-button" id="showComparison">S2 vs S2 Super Reso</button>
     <button class="download-button" id="downloadGeojson">Download Sample Geojson</button>
     <div class="sidebar">
         <!-- Tabs -->
@@ -532,11 +551,11 @@
                 if (event.target.checked) {
                     yearSlider.value = 2020;
                     document.getElementById(`${yearSlider.id}-value`).textContent = 2020;
-                    // alert(`${layerId} layer enabled`);
-                    // Add layer to map
+                    updateWmsLayer(yearSlider.id, 2020);
                 } else {
-                    // alert(`${layerId} layer disabled`);
-                    // Remove layer from map
+                    if (wmsLayers[yearSlider.id]) {
+                        map.removeLayer(wmsLayers[yearSlider.id]);
+                    }
                 }
             });
         });
@@ -626,6 +645,11 @@
         document.getElementById("downloadGeojson").addEventListener("click", () => {
             const downloadUrl = "https://drive.google.com/file/d/1YYBNfcdhAd0M-BS5RZqN_tZjHhzIm86C/view?usp=sharing";
             window.open(downloadUrl, '_blank');
+        });
+
+        document.getElementById("showComparison").addEventListener("click", () => {
+            const comparisonUrl = "https://storage.googleapis.com/sentinel-s2dr3/s2dr3demo15.html?ds=US-T16TGP-20240720-u90963b1#14.7/43.44027/-83.74039";
+            window.open(comparisonUrl, '_blank');
         });
     </script>
 </body>
