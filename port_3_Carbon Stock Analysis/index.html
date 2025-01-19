@@ -262,6 +262,24 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .download-button {
+            position: absolute;
+            bottom: 20px;
+            right: 380px; /* Adjusted to be to the left of the sidebar */
+            padding: 10px 20px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1001; /* Ensure the button is above the map */
+        }
+
+        .download-button:hover {
+            background-color: #005fcc;
+        }
     </style>
 </head>
 <body>
@@ -468,6 +486,20 @@
                         }
                     }).addTo(map);
                     map.fitBounds(geojsonLayer.getBounds());
+
+                    // Add AOI to the list
+                    const aoiList = document.getElementById("aoi-tab");
+                    const currentDate = new Date().toLocaleDateString();
+                    const aoiItem = document.createElement("div");
+                    aoiItem.className = "aoi-item";
+                    aoiItem.innerHTML = `
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i> ${file.name}
+                            <span>(${currentDate})</span>
+                        </div>
+                        <i class="fas fa-ellipsis-v menu-icon"></i>
+                    `;
+                    aoiList.insertBefore(aoiItem, aoiList.firstChild);
                 };
                 reader.readAsText(file);
             }
@@ -479,6 +511,16 @@
             setTimeout(() => {
                 loadingOverlay.style.display = "none";
                 alert("Analysis complete!");
+
+                // Switch to the "ANALYSIS" tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tc => tc.classList.add('hidden'));
+
+                const analysisTab = document.querySelector('.tab[data-tab="analysis-tab"]');
+                const analysisContent = document.getElementById("analysis-tab");
+
+                analysisTab.classList.add('active');
+                analysisContent.classList.remove('hidden');
             }, 5000);
         });
 
@@ -500,15 +542,12 @@
         });
 
         // Year slider logic
-        let wmsLayer;
-        document.querySelectorAll('.year-slider').forEach(slider => {
-            slider.addEventListener('input', (event) => {
-                const yearValue = document.getElementById(`${event.target.id}-value`);
-                yearValue.textContent = event.target.value;
+        let wmsLayers = {};
 
-                if (event.target.id === 'year1') {
-                    const year = event.target.value;
-                    let wmsUrl;
+        function updateWmsLayer(layerId, year) {
+            let wmsUrl;
+            switch (layerId) {
+                case 'year1':
                     switch (year) {
                         case '2020':
                             wmsUrl = 'https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/koltiva_gis_internal%3AAGBD_2017@EPSG%3A900913@png/{z}/{x}/{-y}.png';
@@ -525,17 +564,68 @@
                         default:
                             wmsUrl = '';
                     }
-
-                    if (wmsLayer) {
-                        map.removeLayer(wmsLayer);
+                    break;
+                case 'year2':
+                    switch (year) {
+                        case '2020':
+                            wmsUrl = 'https://example.com/vegetation_index_2020';
+                            break;
+                        case '2021':
+                            wmsUrl = 'https://example.com/vegetation_index_2021';
+                            break;
+                        case '2022':
+                            wmsUrl = 'https://example.com/vegetation_index_2022';
+                            break;
+                        case '2023':
+                            wmsUrl = 'https://example.com/vegetation_index_2023';
+                            break;
+                        default:
+                            wmsUrl = '';
                     }
-
-                    if (wmsUrl) {
-                        wmsLayer = L.tileLayer(wmsUrl);
-                        wmsLayer.addTo(map);
+                    break;
+                case 'year3':
+                    switch (year) {
+                        case '2020':
+                            wmsUrl = 'https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/my_workspace_5%3Asr_for_rnd_2019@EPSG%3A900913@png/{z}/{x}/{-y}.png';
+                            break;
+                        case '2021':
+                            wmsUrl = 'https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/koltiva_gis_internal%3Asr_for_rnd_2020@EPSG%3A900913@png/{z}/{x}/{-y}.png';
+                            break;
+                        case '2022':
+                            wmsUrl = 'https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/koltiva_gis_internal%3Asr_for_rnd_2021@EPSG%3A900913@png/{z}/{x}/{-y}.png';
+                            break;
+                        case '2023':
+                            wmsUrl = 'https://geoserver-development.koltivaapi.com/geoserver/gwc/service/tms/1.0.0/koltiva_gis_internal%3Asr_for_rnd_2022@EPSG%3A900913@png/{z}/{x}/{-y}.png';
+                            break;
+                        default:
+                            wmsUrl = '';
                     }
-                }
+                    break;
+                default:
+                    wmsUrl = '';
+            }
+
+            if (wmsLayers[layerId]) {
+                map.removeLayer(wmsLayers[layerId]);
+            }
+
+            if (wmsUrl) {
+                wmsLayers[layerId] = L.tileLayer(wmsUrl);
+                wmsLayers[layerId].addTo(map);
+            }
+        }
+
+        document.querySelectorAll('.year-slider').forEach(slider => {
+            slider.addEventListener('input', (event) => {
+                const yearValue = document.getElementById(`${event.target.id}-value`);
+                yearValue.textContent = event.target.value;
+                updateWmsLayer(event.target.id, event.target.value);
             });
+        });
+
+        document.getElementById("downloadGeojson").addEventListener("click", () => {
+            const downloadUrl = "https://drive.google.com/file/d/1YYBNfcdhAd0M-BS5RZqN_tZjHhzIm86C/view?usp=sharing";
+            window.open(downloadUrl, '_blank');
         });
     </script>
 </body>
