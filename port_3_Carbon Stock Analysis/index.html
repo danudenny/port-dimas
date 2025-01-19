@@ -262,6 +262,24 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .download-button {
+            position: absolute;
+            bottom: 20px;
+            right: 380px; /* Adjusted to be to the left of the sidebar */
+            padding: 10px 20px;
+            background-color: #1e90ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 1001; /* Ensure the button is above the map */
+        }
+
+        .download-button:hover {
+            background-color: #005fcc;
+        }
     </style>
 </head>
 <body>
@@ -536,6 +554,11 @@
                     }
                 }
             });
+        });
+
+        document.getElementById("downloadGeojson").addEventListener("click", () => {
+            const downloadUrl = "https://drive.google.com/file/d/1YYBNfcdhAd0M-BS5RZqN_tZjHhzIm86C/view?usp=sharing";
+            window.open(downloadUrl, '_blank');
         });
     </script>
 </body>
